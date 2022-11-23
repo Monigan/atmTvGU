@@ -1,15 +1,11 @@
 package myinterface;
 
 import controller.AtmController;
-import controller.impl.AtmControllerImpl;
 import model.Card;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class AtmInterface extends JDialog{
-    AtmController atmController = new AtmControllerImpl();
     private JPanel contentPane;
     private JTextArea cardNumber;
     private JTextArea cardOwner;
@@ -27,20 +23,22 @@ public class AtmInterface extends JDialog{
     private JTextArea cardBalanse;
 
 
-    public AtmInterface(Card card, int pinCode) {
+    public AtmInterface(AtmController atmController) {
         setContentPane(contentPane);
         setModal(true);
-        atmController.inputCard(card, pinCode);
-        parseCardInfo(card);
-        takeMoneyButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (atmController.hasMoney(card)){
-                    AtmTakeMoney atmTakeMoney = new AtmTakeMoney(card);
-                    atmTakeMoney.pack();
-                    atmTakeMoney.setVisible(true);
-                }
-            }
+        parseCardInfo(atmController.getCard());
+        takeMoneyButton.addActionListener(e -> {
+            dispose();
+            AtmTakeMoney atmTakeMoney = new AtmTakeMoney(atmController);
+            atmTakeMoney.pack();
+            atmTakeMoney.setVisible(true);
+
+        });
+        putMoneyButton.addActionListener(e -> {
+            dispose();
+            AtmPutMoney atmPutMoney = new AtmPutMoney(atmController);
+            atmPutMoney.pack();
+            atmPutMoney.setVisible(true);
         });
     }
 

@@ -23,4 +23,12 @@ public class CardRepository {
     public Card getCardById(int id){
         return cards.get(id);
     }
+
+    public void saveState(Card card) {
+        for(int i = 0; i < cards.size(); i++){
+            if(card.getNumber() == cards.get(i).getNumber()){
+                cards.set(i, card);
+            }
+        }
+    }
 }

@@ -2,23 +2,24 @@ package controller.impl;
 
 import controller.AtmController;
 import controller.CardController;
-import model.Atm;
 import model.Card;
-import repository.AtmRepository;
 
 public class AtmControllerImpl implements AtmController {
-    AtmRepository atmRepository = new AtmRepository();
-    Atm atm = atmRepository.getAtmById(0);
     CardController controller = new CardControllerImpl();
     Card card;
 
     @Override
-    public boolean inputCard(Card card, int pinCode) {
-        if (controller.validatePinCode(pinCode, card)){
-            this.card = card;
+    public boolean inputCard(int cardId, int pinCode) {
+        if (controller.validatePinCode(pinCode, controller.getCardById(cardId))){
+            this.card = controller.getCardById(cardId);
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Card getCard() {
+        return this.card;
     }
 
     @Override
@@ -32,16 +33,13 @@ public class AtmControllerImpl implements AtmController {
             return false;
         }
         card.setMoneyValue(card.getMoneyValue() - value);
+        controller.saveState(card);
         return true;
     }
 
     @Override
     public void putMoney(double value) {
         card.setMoneyValue(card.getMoneyValue() + value);
-    }
-
-    @Override
-    public boolean hasMoney(Card card) {
-        return card.getMoneyValue() != 0;
+        controller.saveState(card);
     }
 }

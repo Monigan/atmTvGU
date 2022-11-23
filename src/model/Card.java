@@ -7,6 +7,7 @@ public class Card {
     private final int code;
     private int pinCode;
     private final Money moneyValue;
+    private final String region;
 
     /**
      * Создаем новую карточку, где:
@@ -25,6 +26,7 @@ public class Card {
         this.code = code;
         this.pinCode = pinCode;
         this.moneyValue = new Money(region);
+        this.region = region;
     }
 
     public long getNumber() {
@@ -39,10 +41,6 @@ public class Card {
         return date;
     }
 
-    public int getCode() {
-        return code;
-    }
-
     public double getMoneyValue() {
         return moneyValue.getValue();
     }
@@ -51,11 +49,11 @@ public class Card {
         moneyValue.setValue(value);
     }
 
-    public void setPinCode(int pinCode) {
-        this.pinCode = pinCode;
-    }
-
     public int getPinCode() {
         return pinCode;
+    }
+
+    public String getRegion() {
+        return region;
     }
 }
